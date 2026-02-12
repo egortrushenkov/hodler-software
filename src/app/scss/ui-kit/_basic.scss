@@ -1,0 +1,123 @@
+@use "sass:color";
+
+@function rgb($hex) {
+  @return color.channel($hex, "red"),
+  color.channel($hex, "green"),
+  color.channel($hex, "blue");
+}
+
+$colors: ("primary": #0177F8,
+  "black": #161616,
+  "white": #FFF,
+  "gray": #EFEFEF,
+  "grey": #F6F6F6,
+  "dark": #202020,
+  "smokie": #121212,
+  "red": #E24548,
+  "green": #47B478,
+  "aqua": #CEFEE4,
+  "blue": #37BBFE);
+
+@layer base {
+  :root {
+    --font-base: "Inter", Helvetica, sans-serif;
+
+    @each $key,
+    $value in $colors {
+      --color-#{$key}: #{rgb($value)};
+    }
+  }
+
+  * {
+    -webkit-tap-highlight-color: theme("colors.transparent");
+
+    @apply m-0 p-0;
+
+    scrollbar: {
+      width: thin;
+      color: var(--scroll-color);
+    }
+  }
+
+  html {
+    --scroll-color: theme("colors.black.DEFAULT") theme("colors.gray.DEFAULT");
+
+    font-size: 16px !important;
+
+    &[data-theme="dark"] {
+      --scroll-color: theme("colors.white.DEFAULT") theme("colors.smokie.DEFAULT");
+    }
+  }
+
+  body {
+    @apply bg-grey font-normal font-base text-black text-base;
+  }
+
+  main {
+    @apply flex flex-col min-h-screen;
+  }
+
+  ::selection {
+    @apply text-white bg-primary;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p {
+    &:empty {
+      @apply hidden;
+    }
+  }
+
+  ul {
+    @apply list-none list-outside;
+  }
+
+  ol {
+    @apply list-decimal list-inside;
+  }
+
+  picture {
+    @apply rounded-inherit;
+  }
+
+  img {
+    @apply select-none;
+
+    &:is([src=""], [src="/"]) {
+      @apply hidden;
+    }
+  }
+
+  address {
+    @apply not-italic;
+  }
+
+  q {
+    quotes: "\201c""\201E";
+  }
+
+  label {
+    @apply block;
+  }
+
+  a,
+  button,
+  input,
+  textarea,
+  select {
+    @apply outline-0;
+  }
+
+  textarea {
+    @apply overflow-auto resize-none;
+  }
+
+  select {
+    @apply appearance-none;
+  }
+}
